@@ -333,9 +333,9 @@ function tsmp_create_pdf_columns($layout_type, $arg_font_size){
 	$tsmp_column_html_array = get_option("tsmp_column_html");
 
 	$column_html_enable = isset($tsmp_column_html_array['enable']) ? $tsmp_column_html_array['enable'] : 0;
-	$column_html_page_num = $tsmp_column_html_array['page_num'];
-	$column_html_column_num = $tsmp_column_html_array['column_num'];
-	$column_html_html =  $tsmp_column_html_array['html'];
+	$column_html_page_num = isset($tsmp_column_html_array['page_num']) ? $tsmp_column_html_array['page_num'] : null;
+	$column_html_column_num = isset($tsmp_column_html_array['column_num']) ? $tsmp_column_html_array['column_num'] : null;
+	$column_html_html = isset($tsmp_column_html_array['html']) ? $tsmp_column_html_array['html'] : null;
 
 
 	//calculate column width

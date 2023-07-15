@@ -5,17 +5,13 @@
  * Plugin URI: https://github.com/cdtoews/12-step-meeting-pdf
  * Description: Create PDF meeting list from the 12 Step Meeting List Plugin
  * code forked from https://github.com/meeting-guide/nyintergroup
- * Version: 0.3.1
+ * Version: 1.0.3
  * Author: Chris Toews
  * Author URI: https://yourtechguys.info
  * Text Domain: 12-step-meeting-pdf
  */
 
- 	/*
-	next versions:
-	pages size/orientation
-	custom font
-	*/
+
 
  if (!defined('TSMP_CONTACT_EMAIL')) define('TSMP_CONTACT_EMAIL', 'chris@yourtechguys.info');
  if (!defined('TSMP_PATH')) define('TSMP_PATH', plugin_dir_path(__FILE__));
@@ -23,10 +19,6 @@
 
  if ( ! function_exists('write_log')) {
     function write_log ( $log )  {
-       // $tsmp_debug = false;
-       // if(!$tsmp_debug){
-       //   return;
-       // }
        if ( is_array( $log ) || is_object( $log ) ) {
           error_log( print_r( $log, true ) );
        } else {
@@ -34,6 +26,17 @@
        }
     }
  }
+
+ if ( ! function_exists('verify_array')) {
+    function verify_array ( $thing1 )  {
+       if ( is_array( $thing1 )  ) {
+          return $thing1;
+       } else {
+          return [];
+       }
+    }
+ }
+
 
  //include admin files
  if (is_admin()) {
@@ -194,12 +197,16 @@ $meetings = filter_meetings($meetings);
 				'types' => array(), //for indexes
 			);
 		}
-
-		//for indexes
+		
+		if(!is_array( $meeting['types']))		{
+			$meeting['types'] = [];
+		}
+		
+		//for indexes verify_array
 		$rows[$meeting['region_id']][$key]['types'] = array_merge($rows[$meeting['region_id']][$key]['types'], $meeting['types']);
 
 		//at least one meeting tagged wheelchair-accessible
-		if (($index = array_search('X', $meeting['types'])) !== false) {
+		if (($index = array_search('X', verify_array( $meeting['types']))) !== false) {
 			$rows[$meeting['region_id']][$key]['wheelchair'] = true;
 			unset($meeting['types'][$index]);
 		}
